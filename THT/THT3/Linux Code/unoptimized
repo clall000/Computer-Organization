@@ -1,0 +1,170 @@
+	.file	"Lall_Main.cpp"
+	.text
+	.globl	_Z17computeDotProductPiS_m
+	.type	_Z17computeDotProductPiS_m, @function
+_Z17computeDotProductPiS_m:
+.LFB15:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movq	%rdi, -24(%rbp)
+	movq	%rsi, -32(%rbp)
+	movq	%rdx, -40(%rbp)
+	movl	$0, -12(%rbp)
+	movq	$0, -8(%rbp)
+	jmp	.L2
+.L3:
+	movq	-8(%rbp), %rax
+	leaq	0(,%rax,4), %rdx
+	movq	-24(%rbp), %rax
+	addq	%rdx, %rax
+	movl	(%rax), %eax
+	cltq
+	movl	%eax, %ecx
+	movq	-32(%rbp), %rax
+	movl	(%rax), %eax
+	movslq	%eax, %rdx
+	movq	-8(%rbp), %rax
+	addq	%rdx, %rax
+	imull	%eax, %ecx
+	movl	%ecx, %edx
+	movl	-12(%rbp), %eax
+	addl	%edx, %eax
+	movl	%eax, -12(%rbp)
+	addq	$1, -8(%rbp)
+.L2:
+	movq	-8(%rbp), %rax
+	cmpq	-40(%rbp), %rax
+	jb	.L3
+	movl	-12(%rbp), %eax
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+.LFE15:
+	.size	_Z17computeDotProductPiS_m, .-_Z17computeDotProductPiS_m
+	.local	_ZL5Array
+	.comm	_ZL5Array,64,32
+	.section	.rodata
+.LC2:
+	.string	"size = %i, avg time = %f ns \n"
+	.text
+	.globl	main
+	.type	main, @function
+main:
+.LFB16:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	subq	$96, %rsp
+	movl	%edi, -84(%rbp)
+	movq	%rsi, -96(%rbp)
+	movq	%fs:40, %rax
+	movq	%rax, -8(%rbp)
+	xorl	%eax, %eax
+	pxor	%xmm0, %xmm0
+	movsd	%xmm0, -64(%rbp)
+	movl	$0, -68(%rbp)
+	jmp	.L6
+.L9:
+	leaq	-48(%rbp), %rax
+	movq	%rax, %rsi
+	movl	$1, %edi
+	call	clock_gettime@PLT
+	movl	$16, %edx
+	leaq	_ZL5Array(%rip), %rax
+	movq	%rax, %rsi
+	leaq	_ZL5Array(%rip), %rax
+	movq	%rax, %rdi
+	call	_Z17computeDotProductPiS_m
+	leaq	-32(%rbp), %rax
+	movq	%rax, %rsi
+	movl	$1, %edi
+	call	clock_gettime@PLT
+	movq	-32(%rbp), %rax
+	movq	-48(%rbp), %rdx
+	subq	%rdx, %rax
+	imulq	$1000000000, %rax, %rdx
+	movq	-24(%rbp), %rax
+	addq	%rax, %rdx
+	movq	-40(%rbp), %rax
+	movq	%rax, %rcx
+	movq	%rdx, %rax
+	subq	%rcx, %rax
+	movq	%rax, -56(%rbp)
+	movq	-56(%rbp), %rax
+	testq	%rax, %rax
+	js	.L7
+	pxor	%xmm0, %xmm0
+	cvtsi2sdq	%rax, %xmm0
+	jmp	.L8
+.L7:
+	movq	%rax, %rdx
+	shrq	%rdx
+	andl	$1, %eax
+	orq	%rax, %rdx
+	pxor	%xmm0, %xmm0
+	cvtsi2sdq	%rdx, %xmm0
+	addsd	%xmm0, %xmm0
+.L8:
+	movsd	-64(%rbp), %xmm1
+	addsd	%xmm1, %xmm0
+	movsd	%xmm0, -64(%rbp)
+	addl	$1, -68(%rbp)
+.L6:
+	cmpl	$99, -68(%rbp)
+	jle	.L9
+	movsd	-64(%rbp), %xmm0
+	movsd	.LC1(%rip), %xmm1
+	divsd	%xmm1, %xmm0
+	movsd	%xmm0, -64(%rbp)
+	movq	-64(%rbp), %rax
+	movq	%rax, %xmm0
+	movl	$16, %esi
+	leaq	.LC2(%rip), %rax
+	movq	%rax, %rdi
+	movl	$1, %eax
+	call	printf@PLT
+	movl	$0, %eax
+	movq	-8(%rbp), %rdx
+	subq	%fs:40, %rdx
+	je	.L11
+	call	__stack_chk_fail@PLT
+.L11:
+	leave
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+.LFE16:
+	.size	main, .-main
+	.section	.rodata
+	.align 8
+.LC1:
+	.long	0
+	.long	1079574528
+	.ident	"GCC: (Ubuntu 11.2.0-7ubuntu2) 11.2.0"
+	.section	.note.GNU-stack,"",@progbits
+	.section	.note.gnu.property,"a"
+	.align 8
+	.long	1f - 0f
+	.long	4f - 1f
+	.long	5
+0:
+	.string	"GNU"
+1:
+	.align 8
+	.long	0xc0000002
+	.long	3f - 2f
+2:
+	.long	0x3
+3:
+	.align 8
+4:
